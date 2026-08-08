@@ -5,3 +5,7 @@ __pycache__/
 db.sqlite3
 .env
 .vscode/
+
+# Store sensitive information in a separate file and ignore it
+# superuser_pass.txt have the superuser password for the Django admin interface. It is ignored to prevent accidental exposure of sensitive information.
+superuser_pass.txt
