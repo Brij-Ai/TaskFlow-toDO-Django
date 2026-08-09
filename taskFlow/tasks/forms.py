@@ -1,0 +1,1 @@
+# used for cooked django project settings.py file
