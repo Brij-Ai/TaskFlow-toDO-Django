@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.tasks import Task
+from .models import Task
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -77,9 +77,7 @@ def task_list(request):
 
 @login_required
 def create_task(request):
-
     if request.method == 'POST':
-
         title = request.POST['title']
         description = request.POST['description']
         priority = request.POST['priority']
