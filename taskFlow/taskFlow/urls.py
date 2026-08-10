@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     # Add a URL pattern for the home view
-    path('', views.home, name='home'),
-    path('tasks/', include('tasks.urls')), # Include the tasks app's URLs
+    # path('', views.home, name='home'),
+    path('', include('tasks.urls')), # Include the tasks app's URLs
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

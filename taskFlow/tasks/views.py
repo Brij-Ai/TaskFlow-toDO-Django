@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.tasks import Task
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -61,3 +63,63 @@ def user_logout(request):
     logout(request)
 
     return redirect('login')
+
+@login_required
+def task_list(request):
+    tasks = Task.objects.filter(user=request.user)
+
+    return render(
+        request,
+        'tasks/task_list.html',
+        {'tasks': tasks}
+    )
+
+
+@login_required
+def create_task(request):
+
+    if request.method == 'POST':
+
+        title = request.POST['title']
+        description = request.POST['description']
+        priority = request.POST['priority']
+        due_date = request.POST['due_date']
+
+        Task.objects.create(
+            user=request.user,
+            title=title,
+            description=description,
+            priority=priority,
+            due_date=due_date if due_date else None
+        )
+
+        return redirect('task_list')
+
+    return render(
+        request,
+        'tasks/task_form.html'
+    )
+
+@login_required
+def edit_task(request, task_id):
+    task = Task.objects.get(id = task_id, user = request.user)
+    if request.method == 'POST':
+        task.title = request.POST['title']
+        task.description = request.POST['description']
+        task.priority = request.POST['priority']
+        due_date = request.POST['due_date']
+        task.due_date = due_date if due_date else None
+        task.save()
+        return redirect('task_list')
+
+    return render(request, 'tasks/task_form.html', {'task': task})
+
+@login_required
+def task_list(request):
+    tasks = Task.objects.filter(user=request.user)
+
+    return render(
+        request,
+        'tasks/task_list.html',
+        {'tasks': tasks}
+    )

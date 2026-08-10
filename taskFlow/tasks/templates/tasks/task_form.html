@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Create Task - TaskFlow</title>
+  </head>
+
+  <body>
+    <h1>Create New Task</h1>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <label for="title"> Title: </label>
+
+      <br />
+
+      <input type="text" id="title" name="title" maxlength="200" required />
+
+      <br /><br />
+
+      <label for="description"> Description: </label>
+
+      <br />
+
+      <textarea
+        id="description"
+        name="description"
+        rows="5"
+        cols="40"
+      ></textarea>
+
+      <br /><br />
+
+      <label for="priority"> Priority: </label>
+
+      <br />
+
+      <select id="priority" name="priority">
+        <option value="low">Low</option>
+
+        <option value="medium" selected>Medium</option>
+
+        <option value="high">High</option>
+      </select>
+
+      <br /><br />
+
+      <label for="due_date"> Due Date: </label>
+
+      <br />
+
+      <input type="date" id="due_date" name="due_date" />
+
+      <br /><br />
+
+      <button type="submit">Create Task</button>
+    </form>
+
+    <br />
+
+    <a href="{% url 'task_list' %}"> Back to Tasks </a>
+  </body>
+</html>
