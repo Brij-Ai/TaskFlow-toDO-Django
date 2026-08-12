@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Task
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
 
@@ -100,7 +101,13 @@ def create_task(request):
 
 @login_required
 def edit_task(request, task_id):
-    task = Task.objects.get(id = task_id, user = request.user)
+
+    task = get_object_or_404(
+        Task,
+        id = task_id,
+        user = request.user
+    )
+    
     if request.method == 'POST':
         task.title = request.POST['title']
         task.description = request.POST['description']

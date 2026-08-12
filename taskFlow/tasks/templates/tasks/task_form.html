@@ -1,63 +1,136 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Create Task - TaskFlow</title>
-  </head>
+<head>
 
-  <body>
-    <h1>Create New Task</h1>
+    <title>
+        {% if task %}
+            Edit Task
+        {% else %}
+            Create Task
+        {% endif %}
+        - TaskFlow
+    </title>
+
+</head>
+
+<body>
+
+    <h1>
+        {% if task %}
+            Edit Task
+        {% else %}
+            Create New Task
+        {% endif %}
+    </h1>
+
 
     <form method="POST">
-      {% csrf_token %}
 
-      <label for="title"> Title: </label>
+        {% csrf_token %}
 
-      <br />
 
-      <input type="text" id="title" name="title" maxlength="200" required />
+        <label for="title">
+            Title:
+        </label>
 
-      <br /><br />
+        <br>
 
-      <label for="description"> Description: </label>
+        <input
+            type="text"
+            id="title"
+            name="title"
+            maxlength="200"
+            value="{{ task.title|default:'' }}"
+            required
+        >
 
-      <br />
+        <br><br>
 
-      <textarea
-        id="description"
-        name="description"
-        rows="5"
-        cols="40"
-      ></textarea>
 
-      <br /><br />
+        <label for="description">
+            Description:
+        </label>
 
-      <label for="priority"> Priority: </label>
+        <br>
 
-      <br />
+        <textarea
+            id="description"
+            name="description"
+            rows="5"
+            cols="40"
+        >{{ task.description|default:'' }}</textarea>
 
-      <select id="priority" name="priority">
-        <option value="low">Low</option>
+        <br><br>
 
-        <option value="medium" selected>Medium</option>
 
-        <option value="high">High</option>
-      </select>
+        <label for="priority">
+            Priority:
+        </label>
 
-      <br /><br />
+        <br>
 
-      <label for="due_date"> Due Date: </label>
+        <select id="priority" name="priority">
 
-      <br />
+            <option
+                value="low"
+                {% if task.priority == 'low' %}selected{% endif %}
+            >
+                Low
+            </option>
 
-      <input type="date" id="due_date" name="due_date" />
+            <option
+                value="medium"
+                {% if task.priority == 'medium' or not task %}selected{% endif %}
+            >
+                Medium
+            </option>
 
-      <br /><br />
+            <option
+                value="high"
+                {% if task.priority == 'high' %}selected{% endif %}
+            >
+                High
+            </option>
 
-      <button type="submit">Create Task</button>
+        </select>
+
+        <br><br>
+
+
+        <label for="due_date">
+            Due Date:
+        </label>
+
+        <br>
+
+        <input
+            type="date"
+            id="due_date"
+            name="due_date"
+            value="{{ task.due_date|date:'Y-m-d' }}"
+        >
+
+        <br><br>
+
+
+        <button type="submit">
+
+            {% if task %}
+                Update Task
+            {% else %}
+                Create Task
+            {% endif %}
+
+        </button>
+
     </form>
 
-    <br />
 
-    <a href="{% url 'task_list' %}"> Back to Tasks </a>
-  </body>
+    <br>
+
+    <a href="{% url 'task_list' %}">
+        Back to Tasks
+    </a>
+
+</body>
 </html>

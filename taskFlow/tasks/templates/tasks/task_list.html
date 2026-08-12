@@ -20,7 +20,6 @@
     <hr />
 
     {% if tasks %} {% for task in tasks %}
-
     <div>
       <h3>{{ task.title }}</h3>
 
@@ -43,10 +42,11 @@
         {{ task.due_date }}
       </p>
       {% endif %}
+      <a href="{% url 'edit_task' task.id %}">Edit</a>
     </div>
 
     <hr />
-
+    
     {% endfor %} {% else %}
 
     <p>You don't have any tasks yet.</p>
