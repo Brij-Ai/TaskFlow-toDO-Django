@@ -10,14 +10,25 @@
     <p>Welcome, {{ user.username }}!</p>
 
     <a href="{% url 'logout' %}">Logout</a>
-
-    <hr />
-
+    <br>
     <h2>My Tasks</h2>
-
+    <div>
+      <form method = "GET">
+        <input type="text" name = 'search' placeholder = 'search the tasks..' values = "{{search | default:'' }}">
+        <button type = 'submit'>search</button>
+      </form>
+    </div>
+    <div>
+      <a href="{%url 'task_list'%}">All</a>
+      <a href="{%url 'task_list'%}?status = pending">Pending</a>
+      <a href="{%url 'task_list'%}?status = Completed">Completed</a>
+      <a href="{%url 'task_list'%}?Priority = low">low</a>
+      <a href="{%url 'task_list'%}?Priority = medium">medium</a>
+      <a href="{%url 'task_list'%}?Priority = high">high</a>
+    </div>
     <a href="{% url 'create_task' %}"> Create New Task </a>
 
-    <hr />
+    <hr/>
 
     {% if tasks %} {% for task in tasks %}
     <div>

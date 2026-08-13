@@ -64,17 +64,46 @@ def user_logout(request):
     logout(request)
 
     return redirect('login')
+# Old view before stage 9: Task Filtering 
+# @login_required
+# def task_list(request):
+#     tasks = Task.objects.filter(user=request.user)
 
+#     return render(
+#         request,
+#         'tasks/task_list.html',
+#         {'tasks': tasks}
+#     )
+
+# New view of task_list at stage 9:
 @login_required
 def task_list(request):
-    tasks = Task.objects.filter(user=request.user)
+    tasks = Task.objects.filter(user = request.user)
+    status = request.GET.get('status')
+    priority = request.GET.get('priority')
+    search = request.GET.get('search')
 
-    return render(
-        request,
-        'tasks/task_list.html',
-        {'tasks': tasks}
-    )
+    if status == 'pending':
+        tasks = tasks.filter(completed = False)
+    elif status == 'completed':
+        tasks = tasks.filter(completed = True)
 
+    if priority in ['low', 'medium', 'high']:
+        tasks = tasks.filter(priority = priority)
+
+    if search:
+        tasks = tasks.filter(
+            title__icontains = search
+        ) | tasks.filter(
+            description__icontains = search
+        )
+    
+    return render(request, 'tasks/task_list.html', {
+        'tasks' : tasks,
+        'current_status' : status,
+        'current_priority' : priority,
+        'search' : search,
+    })
 
 @login_required
 def create_task(request):
