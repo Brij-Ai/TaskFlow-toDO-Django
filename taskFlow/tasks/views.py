@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 
 
 def home(request):
-    return HttpResponse("Welcome to TaskFlow! {user}".format(user=request.user.username))
+    return render(request, 'home.html')
 
 def register(request):
 
@@ -120,9 +120,36 @@ def edit_task(request, task_id):
     return render(request, 'tasks/task_form.html', {'task': task})
 
 @login_required
+def delete_task(request, task_id):
+    task = get_object_or_404(
+        Task,
+        id = task_id,
+        user = request.user
+    )
+    if task.user != request.user :
+        return render(request, '403.html', {
+            'massage' : 'You are not allowed to delete this task'
+        })
+    elif request.method == 'POST':
+        task.delete()
+        return redirect('task_list')  # Keep in mind always redirect to view
+    return render(request, 'tasks/confirm_delete.html', {'task' : task})
+
+
+@login_required
+def toggle_task(request, task_id):
+    task = get_object_or_404(
+        Task,
+        id = task_id,
+        user = request.user
+    )
+    if request.method == 'POST':
+        task.completed = not task.completed
+        task.save()
+    return redirect('task_list')
+@login_required
 def task_list(request):
     tasks = Task.objects.filter(user=request.user)
-
     return render(
         request,
         'tasks/task_list.html',

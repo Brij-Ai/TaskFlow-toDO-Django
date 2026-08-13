@@ -1,0 +1,21 @@
+{% comment %} {% extends 'layout.html' %}
+
+{% block title %}ToDo Home{% endblock %}
+
+{% block content %}
+<h1>hello , say welcome</h1>
+{% endblock %} {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+</head>
+<body>
+    <h1>Welcome to ToDo</h1>
+    <a href="{%url 'login'%}">login</a>
+    <a href="{%url 'register'%}">register</a>
+</body>
+</html>

@@ -36,6 +36,16 @@
         {% if task.completed %} Completed {% else %} Pending {% endif %}
       </p>
 
+      <form method="POST" action = "{% url 'toggle_task' task.id %}">
+        {% csrf_token %}
+        
+        {% if task.completed %}
+          <button type = 'submit'>Mark as Pending</button>
+        {% else %}
+          <button type = 'submit'>Mark as Completed</button>
+        {% endif %}
+      </form>
+
       {% if task.due_date %}
       <p>
         <strong>Due:</strong>
@@ -43,6 +53,7 @@
       </p>
       {% endif %}
       <a href="{% url 'edit_task' task.id %}">Edit</a>
+      <a href="{% url 'delete_task' task.id %}">Delete</a>
     </div>
 
     <hr />
