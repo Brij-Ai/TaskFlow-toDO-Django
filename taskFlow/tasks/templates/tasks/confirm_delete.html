@@ -1,24 +1,18 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Delete Task - TaskFlow</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  </head>
-  <body class="container" style="background-color: #b2b8b8;">
-    <h1>Delete Task</h1>
+{% extends "home.html" %}
+{% block title %}Confrimation Deletion{% endblock %}
 
-    <p>Are you sure you want to delete this task?</p>
+{% block content %}
+  <div style = 'text-align:center; margin-top:50px'>
+    <h1>Delete The Task</h1>
+    <h3>Are you sure you want to delete this task?</h3>
+    <br>
+    <h3>{{task.title}}</h3>
+    </h4>{{task.description}}</h4>
 
-    <h3>{{ task.title }}</h3>
-
-    <p>{{ task.description }}</p>
-
-    <form method="POST">
+    <form method = 'POST'>
       {% csrf_token %}
-
-      <button type="submit" class="btn btn-danger">Yes, Delete</button>
-
-      <a href="{% url 'task_list' %}" class="btn btn-success" role="button"> Cancel </a>
+      <button type = 'submit' class="btn btn-danger mt-3">Yes, Delete</button>
+      <a href="{% url 'task_list' %}" class="btn btn-secondary mt-3">Cancel</a>
     </form>
-  </body>
-</html>
+  </div>
+{% endblock %}
