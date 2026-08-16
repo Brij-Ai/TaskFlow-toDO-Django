@@ -12,10 +12,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
     <h1>Welcome to ToDo</h1>
-    <a href="{%url 'login'%}">login</a>
-    <a href="{%url 'register'%}">register</a>
+    {% comment %} <p><a href="{%url 'login'%}" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">login</a></p> {% endcomment %}
+    {% comment %} <p><a href="{%url 'register'%}" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">register</a></p> {% endcomment %}
+    <button type="button" class="btn btn-primary" onclick="location.href='{% url 'login' %}'">login</button>
+    <button type="button" class="btn btn-primary" onclick="location.href='{% url 'register' %}'">Register</button>
 </body>
 </html>

@@ -1,3 +1,4 @@
+from django import tasks
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -119,12 +120,12 @@ def task_list(request):
         'current_status' : status,
         'current_priority' : priority,
         'search' : search,
-        
-        'total_tasks' : total_tasks,
-        'completed_tasks' : completed_tasks,
-        'pending_tasks' : pending_tasks,
-        'high_priority_tasks' : high_priority_tasks,
-        'completion_percentage': completion_percentage,
+        # New view created for the dashboard, so the following context variables are commented out to avoid redundancy.
+        # 'total_tasks' : total_tasks,
+        # 'completed_tasks' : completed_tasks,
+        # 'pending_tasks' : pending_tasks,
+        # 'high_priority_tasks' : high_priority_tasks,
+        # 'completion_percentage': completion_percentage,
     })
 
 @login_required
@@ -198,7 +199,30 @@ def toggle_task(request, task_id):
         task.completed = not task.completed
         task.save()
     return redirect('task_list')
+@login_required
+def user_dashboard(request, task_id):
+    task = get_object_or_404(
+            Task,
+            id = task_id,
+            user = request.user
+        )
 
+    total_tasks = Task.objects.filter(user=request.user).count()
+    completed_tasks = Task.objects.filter(user=request.user, completed=True).count()
+    pending_tasks = Task.objects.filter(user=request.user, completed=False).count()
+
+    if total_tasks > 0:
+        completion_percentage = (completed_tasks / total_tasks) * 100
+    else:
+        completion_percentage = 0
+
+    return render(request, 'tasks/user_dashboard.html', {
+        'task': task,
+        'total_tasks': total_tasks,
+        'completed_tasks': completed_tasks,
+        'pending_tasks': pending_tasks,
+        'completion_percentage': completion_percentage,
+    })
 # Dupicate of task_list view before stage 9: Task Filtering
 # It creates a conflict with the new task_list view, so it is commented out.
 # @login_required

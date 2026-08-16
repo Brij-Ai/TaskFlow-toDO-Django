@@ -2,9 +2,9 @@
 <html>
   <head>
     <title>Delete Task - TaskFlow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
-
-  <body>
+  <body class="container" style="background-color: #b2b8b8;">
     <h1>Delete Task</h1>
 
     <p>Are you sure you want to delete this task?</p>
@@ -16,9 +16,9 @@
     <form method="POST">
       {% csrf_token %}
 
-      <button type="submit">Yes, Delete</button>
+      <button type="submit" class="btn btn-danger">Yes, Delete</button>
 
-      <a href="{% url 'task_list' %}"> Cancel </a>
+      <a href="{% url 'task_list' %}" class="btn btn-success" role="button"> Cancel </a>
     </form>
   </body>
 </html>
