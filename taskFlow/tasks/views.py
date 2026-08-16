@@ -32,7 +32,7 @@ def register(request):
 
         login(request, user)
 
-        return redirect('home')
+        return redirect('task_list')
 
     return render(request, 'tasks/register.html')
 
@@ -53,7 +53,7 @@ def user_login(request):
 
             login(request, user)
 
-            return redirect('home')
+            return redirect('task_list')
 
         messages.error(request, "Invalid username or password.")
 
@@ -198,11 +198,14 @@ def toggle_task(request, task_id):
         task.completed = not task.completed
         task.save()
     return redirect('task_list')
-@login_required
-def task_list(request):
-    tasks = Task.objects.filter(user=request.user)
-    return render(
-        request,
-        'tasks/task_list.html',
-        {'tasks': tasks}
-    )
+
+# Dupicate of task_list view before stage 9: Task Filtering
+# It creates a conflict with the new task_list view, so it is commented out.
+# @login_required
+# def task_list(request):
+#     tasks = Task.objects.filter(user=request.user)
+#     return render(
+#         request,
+#         'tasks/task_list.html',
+#         {'tasks': tasks}
+#     )
