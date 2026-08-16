@@ -4,19 +4,21 @@
   <head>
     <title>My Tasks - TaskFlow</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
 
-  <body>
+  <body class="container" style="background-color: #82888f;">
     <h1>TaskFlow</h1>
 
     <p>Welcome, {{ user.username }}!</p>
 
-    <a href="{% url 'logout' %}">Logout</a>
+    <a href="{% url 'logout' %}" class="btn btn-outline-danger" role="button">Logout</a>
     <br>
     <h2>My Tasks</h2>
 
     {% comment %} Dashboard {% endcomment %}
-    <div>
+    <a href="{% url 'user_dashboard' %}" class="btn btn-danger" role="button">dashboard</a>
+    {% comment %} <div>
       <h2>Dashboard</h2>
       <div>
         <p>Total Tasks: {{ total_tasks }}</p>
@@ -24,26 +26,26 @@
         <p>Pending Tasks: {{ pending_tasks }}</p>
         <p>Completed: {{ completion_percentage }} %</p>
       </div>
-    </div>
+    </div> {% endcomment %}
 
     {% comment %} Search Form {% endcomment %}
     <div>
       <form method = "GET">
         <input type="text" name = 'search' placeholder = 'search the tasks..' values = "{{search | default:'' }}">
-        <button type = 'submit'>search</button>
+        <button type = 'submit' class="btn btn-danger">search</button>
       </form>
     </div>
 
     {% comment %} Filter Links {% endcomment %}
     <div>
-      <a href="{%url 'task_list'%}">All</a>
-      <a href="{%url 'task_list'%}?status = pending">Pending</a>
-      <a href="{%url 'task_list'%}?status = Completed">Completed</a>
-      <a href="{%url 'task_list'%}?Priority = low">low</a>
-      <a href="{%url 'task_list'%}?Priority = medium">medium</a>
-      <a href="{%url 'task_list'%}?Priority = high">high</a>
+      <a href="{%url 'task_list'%}" class="btn btn-primary" role="button">All</a>
+      <a href="{%url 'task_list'%}?status = pending" class="btn btn-warning" role="button">Pending</a>
+      <a href="{%url 'task_list'%}?status = Completed" class="btn btn-success" role="button">Completed</a>
+      <a href="{%url 'task_list'%}?Priority = low" class="btn btn-secondary" role="button">low</a>
+      <a href="{%url 'task_list'%}?Priority = medium" class="btn btn-info" role="button">medium</a>
+      <a href="{%url 'task_list'%}?Priority = high" class="btn btn-danger" role="button">high</a>
     </div>
-    <a href="{% url 'create_task' %}"> Create New Task </a>
+    <a href="{% url 'create_task' %}" class="btn btn-primary" role="button">Create New Task</a>
 
     <hr/>
 
@@ -68,9 +70,9 @@
         {% csrf_token %}
         
         {% if task.completed %}
-          <button type = 'submit'>Mark as Pending</button>
+          <button type = 'submit' class="btn btn-warning">Mark as Pending</button>
         {% else %}
-          <button type = 'submit'>Mark as Completed</button>
+          <button type = 'submit' class="btn btn-success">Mark as Completed</button>
         {% endif %}
       </form>
 
@@ -80,8 +82,8 @@
         {{ task.due_date }}
       </p>
       {% endif %}
-      <a href="{% url 'edit_task' task.id %}">Edit</a>
-      <a href="{% url 'delete_task' task.id %}">Delete</a>
+      <a href="{% url 'edit_task' task.id %}" class="btn btn-warning" role="button">Edit</a>
+      <a href="{% url 'delete_task' task.id %}" class="btn btn-danger" role="button">Delete</a>
     </div>
 
     <hr />

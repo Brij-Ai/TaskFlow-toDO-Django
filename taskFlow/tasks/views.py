@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.tasks import task
 from .models import Task
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
@@ -81,18 +82,18 @@ def user_logout(request):
 def task_list(request):
     tasks = Task.objects.filter(user = request.user)
 
-    # Dashboard statistics
-    total_tasks = tasks.count()
-    completed_tasks = tasks.filter(completed = True).count()
-    pending_tasks = tasks.filter(completed = False).count()
-    high_priority_tasks = tasks.filter(priority = 'high').count()
+    # # Dashboard statistics
+    # total_tasks = tasks.count()
+    # completed_tasks = tasks.filter(completed = True).count()
+    # pending_tasks = tasks.filter(completed = False).count()
+    # high_priority_tasks = tasks.filter(priority = 'high').count()
 
-    if total_tasks > 0:
-        completion_percentage = (
-            completed_tasks / total_tasks
-        ) * 100
-    else:
-        completion_percentage = 0
+    # if total_tasks > 0:
+    #     completion_percentage = (
+    #         completed_tasks / total_tasks
+    #     ) * 100
+    # else:
+    #     completion_percentage = 0
 
     # Filtering tasks based on query parameters
     status = request.GET.get('status')
@@ -200,28 +201,28 @@ def toggle_task(request, task_id):
         task.save()
     return redirect('task_list')
 @login_required
-def user_dashboard(request, task_id):
-    task = get_object_or_404(
-            Task,
-            id = task_id,
-            user = request.user
-        )
-
-    total_tasks = Task.objects.filter(user=request.user).count()
-    completed_tasks = Task.objects.filter(user=request.user, completed=True).count()
-    pending_tasks = Task.objects.filter(user=request.user, completed=False).count()
+def user_dashboard(request, task_id=None):
+    tasks = Task.objects.filter(user = request.user)
+    # Dashboard statistics
+    total_tasks = tasks.count()
+    completed_tasks = tasks.filter(completed = True).count()
+    pending_tasks = tasks.filter(completed = False).count()
+    high_priority_tasks = tasks.filter(priority = 'high').count()
 
     if total_tasks > 0:
-        completion_percentage = (completed_tasks / total_tasks) * 100
+        completion_percentage = (
+            completed_tasks / total_tasks
+        ) * 100
     else:
         completion_percentage = 0
 
     return render(request, 'tasks/user_dashboard.html', {
-        'task': task,
+        'tasks': tasks,
         'total_tasks': total_tasks,
         'completed_tasks': completed_tasks,
         'pending_tasks': pending_tasks,
         'completion_percentage': completion_percentage,
+        'high_priority_tasks' : high_priority_tasks,
     })
 # Dupicate of task_list view before stage 9: Task Filtering
 # It creates a conflict with the new task_list view, so it is commented out.
