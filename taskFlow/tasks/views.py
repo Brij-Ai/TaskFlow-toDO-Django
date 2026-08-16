@@ -79,6 +79,21 @@ def user_logout(request):
 @login_required
 def task_list(request):
     tasks = Task.objects.filter(user = request.user)
+
+    # Dashboard statistics
+    total_tasks = tasks.count()
+    completed_tasks = tasks.filter(completed = True).count()
+    pending_tasks = tasks.filter(completed = False).count()
+    high_priority_tasks = tasks.filter(priority = 'high').count()
+
+    if total_tasks > 0:
+        completion_percentage = (
+            completed_tasks / total_tasks
+        ) * 100
+    else:
+        completion_percentage = 0
+
+    # Filtering tasks based on query parameters
     status = request.GET.get('status')
     priority = request.GET.get('priority')
     search = request.GET.get('search')
@@ -90,19 +105,26 @@ def task_list(request):
 
     if priority in ['low', 'medium', 'high']:
         tasks = tasks.filter(priority = priority)
-
+    # Search functionality
     if search:
         tasks = tasks.filter(
             title__icontains = search
         ) | tasks.filter(
             description__icontains = search
         )
-    
+
+    # Rendering the task list template with context
     return render(request, 'tasks/task_list.html', {
         'tasks' : tasks,
         'current_status' : status,
         'current_priority' : priority,
         'search' : search,
+        
+        'total_tasks' : total_tasks,
+        'completed_tasks' : completed_tasks,
+        'pending_tasks' : pending_tasks,
+        'high_priority_tasks' : high_priority_tasks,
+        'completion_percentage': completion_percentage,
     })
 
 @login_required

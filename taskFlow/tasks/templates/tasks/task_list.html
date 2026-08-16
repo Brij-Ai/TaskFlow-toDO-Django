@@ -1,7 +1,9 @@
+{% load static %}
 <!doctype html>
 <html>
   <head>
     <title>My Tasks - TaskFlow</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
 
   <body>
@@ -12,12 +14,27 @@
     <a href="{% url 'logout' %}">Logout</a>
     <br>
     <h2>My Tasks</h2>
+
+    {% comment %} Dashboard {% endcomment %}
+    <div>
+      <h2>Dashboard</h2>
+      <div>
+        <p>Total Tasks: {{ total_tasks }}</p>
+        <p>Completed Tasks: {{ completed_tasks }}</p>
+        <p>Pending Tasks: {{ pending_tasks }}</p>
+        <p>Completed: {{ completion_percentage }} %</p>
+      </div>
+    </div>
+
+    {% comment %} Search Form {% endcomment %}
     <div>
       <form method = "GET">
         <input type="text" name = 'search' placeholder = 'search the tasks..' values = "{{search | default:'' }}">
         <button type = 'submit'>search</button>
       </form>
     </div>
+
+    {% comment %} Filter Links {% endcomment %}
     <div>
       <a href="{%url 'task_list'%}">All</a>
       <a href="{%url 'task_list'%}?status = pending">Pending</a>
