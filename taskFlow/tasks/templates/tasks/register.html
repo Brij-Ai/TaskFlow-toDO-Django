@@ -3,24 +3,105 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <div style = 'text-align:center; margin-top:50px'>
-        <h1>Create Account</h1>
-        <form method = 'POST'>
-            {% csrf_token %}
-            <div class = "form-floatformating mb-3">
-                    <label>Username:</label>
-                    <br>
-                    <input type="text" name = 'username' placeholder = 'Enter your username' class = 'form-control' required>
-                    <br>
-                    <br>
-                    <label>Password:</label>
-                    <br>
-                    <input type="password" name = 'password' placeholder = 'Enter your password' class = 'form-control' required>
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-12 col-sm-10 col-md-6 col-lg-5">
+
+            <div class="card shadow border-0">
+
+                <!-- Header -->
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold">Create Account</h2>
+                        <p class="text-muted mb-0">
+                            Create your TaskFlow account
+                        </p>
+                    </div>
+
+
+                    <!-- Registration Form -->
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <!-- Username -->
+                        <div class="mb-3">
+
+                            <label for="username" class="form-label">
+                                Username
+                            </label>
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="form-control"
+                                placeholder="Enter your username"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Password -->
+                        <div class="mb-4">
+
+                            <label for="password" class="form-label">
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Enter your password"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Register Button -->
+                        <div class="d-grid">
+
+                            <button
+                                type="submit"
+                                class="btn btn-success">
+                                Register
+                            </button>
+
+                        </div>
+
+                    </form>
+
+
+                    <!-- Login Link -->
+                    <div class="text-center mt-4">
+
+                        <p class="text-muted mb-2">
+                            Already have an account?
+                        </p>
+                        <a
+                            href="{% url 'login' %}"
+                            class="btn btn-outline-primary">
+                            Login
+                        </a>
+
+                    </div>
+
                 </div>
-            <button type = 'submit' {% url 'home' %} class = 'btn btn-success'>Register</button>
-        </form>
-        <br>
-        <p>Already you an account ?</p>
-        <a href="{% url 'login' %}" class = 'btn btn-outline-primary'>login</a>
+
+            </div>
+
+        </div>
+
     </div>
+
+</div>
+
 {% endblock %}
