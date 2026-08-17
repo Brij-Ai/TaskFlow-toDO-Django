@@ -1,97 +1,244 @@
-{% load static %}
-<!doctype html>
-<html>
-  <head>
-    <title>My Tasks - TaskFlow</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  </head>
+{% extends 'home.html' %}
 
-  <body class="container" style="background-color: #82888f;">
-    <h1>TaskFlow</h1>
+{% block title %}{{ user.username }}'s Tasks{% endblock %}
+{% block lio %}
 
-    <p>Welcome, {{ user.username }}!</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
 
-    <a href="{% url 'logout' %}" class="btn btn-outline-danger" role="button">Logout</a>
-    <br>
-    <h2>My Tasks</h2>
+    <div class="container">
 
-    {% comment %} Dashboard {% endcomment %}
-    <a href="{% url 'user_dashboard' %}" class="btn btn-danger" role="button">dashboard</a>
-    {% comment %} <div>
-      <h2>Dashboard</h2>
-      <div>
-        <p>Total Tasks: {{ total_tasks }}</p>
-        <p>Completed Tasks: {{ completed_tasks }}</p>
-        <p>Pending Tasks: {{ pending_tasks }}</p>
-        <p>Completed: {{ completion_percentage }} %</p>
-      </div>
-    </div> {% endcomment %}
+        <!-- Brand -->
+        <a class="navbar-brand fw-bold fs-4" href="{% url 'task_list' %}">
+            📋 TaskFlow
+        </a>
+            
+        <!-- Right Side -->
+        <div class="d-flex align-items-center gap-2 ms-auto">
 
-    {% comment %} Search Form {% endcomment %}
-    <div>
-      <form method = "GET">
-        <input type="text" name = 'search' placeholder = 'search the tasks..' values = "{{search | default:'' }}">
-        <button type = 'submit' class="btn btn-danger">search</button>
-      </form>
+            <!-- Welcome -->
+            <span class="text-dark me-2">
+                Welcome <strong>{{ user.username }}</strong> 👤
+            </span>
+            <!-- Dashboard -->
+            <a href="{% url 'user_dashboard' %}"
+               class="btn btn-outline-info">
+                Dashboard
+            </a>
+
+            <!-- Search -->
+            <form method="GET"
+                  action="{% url 'task_list' %}"
+                  class="d-flex">
+
+                <input
+                    type="search"
+                    name="search"
+                    class="form-control"
+                    placeholder="Search tasks..."
+                    value="{{ search_query|default:'' }}"
+                    style="width: 220px;"
+                >
+
+                <button
+                    type="submit"
+                    class="btn btn-danger ms-2">
+                    Search
+                </button>
+
+            </form>
+
+            <!-- Logout -->
+            <form action="{% url 'logout' %}"
+                  method="POST"
+                  class="ms-1">
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="btn btn-outline-danger">
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
 
-    {% comment %} Filter Links {% endcomment %}
-    <div>
-      <a href="{%url 'task_list'%}" class="btn btn-primary" role="button">All</a>
-      <a href="{%url 'task_list'%}?status = pending" class="btn btn-warning" role="button">Pending</a>
-      <a href="{%url 'task_list'%}?status = Completed" class="btn btn-success" role="button">Completed</a>
-      <a href="{%url 'task_list'%}?Priority = low" class="btn btn-secondary" role="button">low</a>
-      <a href="{%url 'task_list'%}?Priority = medium" class="btn btn-info" role="button">medium</a>
-      <a href="{%url 'task_list'%}?Priority = high" class="btn btn-danger" role="button">high</a>
+</nav>
+
+{% endblock %}
+{% block content %}
+    <div class="container py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">My Tasks</h2>
+            <p class="text-warning mb-0">
+                Manage your tasks and stay organized.
+            </p>
+        </div>
+
+        <a href="{% url 'create_task' %}" class="btn btn-primary">
+            + Create New Task
+        </a>
+
     </div>
-    <a href="{% url 'create_task' %}" class="btn btn-primary" role="button">Create New Task</a>
+    <!-- Task Cards -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
 
-    <hr/>
+        {% for task in tasks %}
 
-    {% if tasks %} {% for task in tasks %}
-    <div>
-      <h3>{{ task.title }}</h3>
+        <div class="col">
 
-      <p>{{ task.description }}</p>
+            <div class="card h-100 shadow-sm border-0">
 
-      <p>
-        <strong>Priority:</strong>
-        {{ task.get_priority_display }}
-      </p>
+                <div class="card-body">
 
-      <p>
-        <strong>Status:</strong>
+                    <!-- Title + Priority -->
+                    <div class="d-flex justify-content-between align-items-start mb-3">
 
-        {% if task.completed %} Completed {% else %} Pending {% endif %}
-      </p>
+                        <h5 class="card-title fw-bold mb-0">
+                            {% if task.completed %}
+                                <span class="text-decoration-line-through text-muted">
+                                    {{ task.title }}
+                                </span>
+                            {% else %}
+                                {{ task.title }}
+                            {% endif %}
+                        </h5>
 
-      <form method="POST" action = "{% url 'toggle_task' task.id %}">
-        {% csrf_token %}
-        
-        {% if task.completed %}
-          <button type = 'submit' class="btn btn-warning">Mark as Pending</button>
-        {% else %}
-          <button type = 'submit' class="btn btn-success">Mark as Completed</button>
-        {% endif %}
-      </form>
+                        {% if task.priority == 'high' %}
+                            <span class="badge bg-danger">
+                                High
+                            </span>
 
-      {% if task.due_date %}
-      <p>
-        <strong>Due:</strong>
-        {{ task.due_date }}
-      </p>
-      {% endif %}
-      <a href="{% url 'edit_task' task.id %}" class="btn btn-warning" role="button">Edit</a>
-      <a href="{% url 'delete_task' task.id %}" class="btn btn-danger" role="button">Delete</a>
+                        {% elif task.priority == 'medium' %}
+                            <span class="badge bg-warning text-dark">
+                                Medium
+                            </span>
+
+                        {% else %}
+                            <span class="badge bg-success">
+                                Low
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Description -->
+                    <p class="card-text text-muted mb-4">
+                        {{ task.description }}
+                    </p>
+
+
+                    <!-- Due Date -->
+                    <div class="mb-3">
+
+                        {% if task.due_date %}
+
+                            <small class="text-muted">
+                                Due date
+                            </small>
+
+                            <div class="fw-semibold">
+                                {{ task.due_date|date:"d M Y" }}
+                            </div>
+
+                        {% else %}
+
+                            <small class="text-muted">
+                                No due date
+                            </small>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Status -->
+                    <form method="POST"
+                          action="{% url 'toggle_task' task.id %}">
+
+                        {% csrf_token %}
+
+                        <div class="form-check">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="task{{ task.id }}"
+                                onchange="this.form.submit()" {% if task.completed %}checked{% endif %}>
+                            <label
+                                class="form-check-label fw-semibold"
+                                for="task{{ task.id }}">
+
+                                {% if task.completed %}
+
+                                    <span class="text-success">
+                                        Completed
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-warning">
+                                        Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </label>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- Footer -->
+                <div class="card-footer bg-transparent border-top">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <small class="text-muted">
+                            {{ task.created_at|date:"d M Y" }}
+                        </small>
+
+                        <div>
+
+                            <a
+                                href="{% url 'edit_task' task.id %}"
+                                class="btn btn-sm btn-outline-primary"
+                            >
+                                Edit
+                            </a>
+
+                            <a
+                                href="{% url 'delete_task' task.id %}"
+                                class="btn btn-sm btn-outline-danger"
+                            >
+                                Delete
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
     </div>
 
-    <hr />
-    
-    {% endfor %} {% else %}
+</div>
 
-    <p>You don't have any tasks yet.</p>
 
-    {% endif %}
-  </body>
-</html>
+{% endblock %}

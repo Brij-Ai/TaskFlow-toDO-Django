@@ -1,24 +1,89 @@
-{% comment %} {% extends 'layout.html' %}
-
-{% block title %}ToDo Home{% endblock %}
-
-{% block content %}
-<h1>hello , say welcome</h1>
-{% endblock %} {% endcomment %}
-
-<!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-</head>
-<body>
-    <h1>Welcome to ToDo</h1>
-    {% comment %} <p><a href="{%url 'login'%}" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">login</a></p> {% endcomment %}
-    {% comment %} <p><a href="{%url 'register'%}" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">register</a></p> {% endcomment %}
-    <button type="button" class="btn btn-primary" onclick="location.href='{% url 'login' %}'">login</button>
-    <button type="button" class="btn btn-primary" onclick="location.href='{% url 'register' %}'">Register</button>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}TaskFlow Home{% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-dark" style="font-family: Arial sans-serif; color: #615d5d">
+    {% block lio %}
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <di class="container">
+          <a class="navbar-brand fw-bold">🗒️TaskFlow </a>
+          <div class="ms-auto">
+            {% if user.is_authenticated %}
+            <span class="text-bg-black me-3 gap-3">
+              Welcome <b>{{ user.username }}</b> 👤</span>
+            <form action="{% url 'logout' %}" method="POST" class="d-inline">
+              {% csrf_token %}
+              <button class="btn btn-outline-danger">Logout</button>
+            </form>
+              <a href="{%url 'task_list'%}" class="btn btn-outline-success"role="button">My Task</a>
+              <a href="{% url 'user_dashboard' %}" class="btn btn-outline-info" role="button">Dashboard</a>
+            {% endif %}
+          </div>
+          <div>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'register' %}" class="btn btn-primary me-2">Register</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-primary"> Login </a>
+            {% endif %}
+          </div>
+        </nav>
+      {% endblock %}
+
+    {% block content %}
+    <div class="container text-center py-5">
+      <h1 class="display-4 fw-bold">Welcome to TaskFlow</h1>
+
+      <p class="lead mt-3">
+        Organize your tasks. Stay focused. Get things done.
+      </p>
+
+      <p class="mt-4">
+        TaskFlow is a simple and efficient task management application designed
+        to help you organize your daily work and keep track of your progress.
+      </p>
+
+      <div class="row mt-5">
+        <div class="col-md-4">
+          <h3>Manage Your Tasks</h3>
+          <p>
+            Create, edit, complete, and delete tasks from one place. Set
+            priorities and keep your work organized.
+          </p>
+        </div>
+
+        <div class="col-md-4">
+          <h3>Track Your Progress</h3>
+          <p>
+            Use your dashboard to see your total, completed, pending, and
+            high-priority tasks at a glance.
+          </p>
+        </div>
+
+        <div class="col-md-4">
+          <h3>Stay Productive</h3>
+          <p>
+            Keep your tasks organized, focus on what matters, and make steady
+            progress toward your goals.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <h4>Get Started</h4>
+
+        <p>Create an account and start managing your tasks today.</p>
+        
+        <a class="nav-link, link-underline-light" href="{% url 'contact' %}">Contact Us</a> 
+      </div>
+    </div>
+
+    {% endblock %}
+  </body>
 </html>

@@ -1,36 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Register - TaskFlow</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-</head>
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
 
-<body class="container" style="background-color: #b2b8b8;">
-
-    <h1>Create Account</h1>
-
-    <form method="POST">
-
-        {% csrf_token %}
-        
-        <label>Username:</label>
-        <input type="text" name="username" required>
-
-        <br><br>
-
-        <label>Password:</label>
-        <input type="password" name="password" required>
-
-        <br><br>
-
-        <button class="btn btn-primary" type="submit">Register</button>
-
-    </form>
-
-    <p>
-        Already have an account?
-        <a href="{% url 'login' %}" class="btn btn-secondary" role="button">Login</a>
-    </p>
-
-</body>
-</html>
+{% block content %}
+    <div style = 'text-align:center; margin-top:50px'>
+        <h1>Create Account</h1>
+        <form method = 'POST'>
+            {% csrf_token %}
+            <div class = "form-floatformating mb-3">
+                    <label>Username:</label>
+                    <br>
+                    <input type="text" name = 'username' placeholder = 'Enter your username' class = 'form-control' required>
+                    <br>
+                    <br>
+                    <label>Password:</label>
+                    <br>
+                    <input type="password" name = 'password' placeholder = 'Enter your password' class = 'form-control' required>
+                </div>
+            <button type = 'submit' {% url 'home' %} class = 'btn btn-success'>Register</button>
+        </form>
+        <br>
+        <p>Already you an account ?</p>
+        <a href="{% url 'login' %}" class = 'btn btn-outline-primary'>login</a>
+    </div>
+{% endblock %}
