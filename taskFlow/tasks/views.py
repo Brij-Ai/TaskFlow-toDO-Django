@@ -12,21 +12,17 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 # Create your views here.
 
-
 def home(request):
     return render(request, 'home.html')
 
 def register(request):
 
     if request.method == 'POST':
-
         username = request.POST['username']
         password = request.POST['password']
-
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists.")
             return redirect('register')
-
         user = User.objects.create_user(
             username=username,
             password=password
@@ -66,36 +62,11 @@ def user_logout(request):
     logout(request)
 
     return redirect('login')
-# Old view before stage 9: Task Filtering 
-# @login_required
-# def task_list(request):
-#     tasks = Task.objects.filter(user=request.user)
-
-#     return render(
-#         request,
-#         'tasks/task_list.html',
-#         {'tasks': tasks}
-#     )
 
 # New view of task_list at stage 9:
 @login_required
 def task_list(request):
     tasks = Task.objects.filter(user = request.user)
-
-    # # Dashboard statistics
-    # total_tasks = tasks.count()
-    # completed_tasks = tasks.filter(completed = True).count()
-    # pending_tasks = tasks.filter(completed = False).count()
-    # high_priority_tasks = tasks.filter(priority = 'high').count()
-
-    # if total_tasks > 0:
-    #     completion_percentage = (
-    #         completed_tasks / total_tasks
-    #     ) * 100
-    # else:
-    #     completion_percentage = 0
-
-    # Filtering tasks based on query parameters
     status = request.GET.get('status')
     priority = request.GET.get('priority')
     search = request.GET.get('search')
@@ -121,12 +92,6 @@ def task_list(request):
         'current_status' : status,
         'current_priority' : priority,
         'search' : search,
-        # New view created for the dashboard, so the following context variables are commented out to avoid redundancy.
-        # 'total_tasks' : total_tasks,
-        # 'completed_tasks' : completed_tasks,
-        # 'pending_tasks' : pending_tasks,
-        # 'high_priority_tasks' : high_priority_tasks,
-        # 'completion_percentage': completion_percentage,
     })
 
 @login_required
@@ -135,8 +100,7 @@ def create_task(request):
         title = request.POST['title']
         description = request.POST['description']
         priority = request.POST['priority']
-        due_date = request.POST['due_date']
-
+        due_date = request.POST.get('due_date')
         Task.objects.create(
             user=request.user,
             title=title,
@@ -165,7 +129,7 @@ def edit_task(request, task_id):
         task.title = request.POST['title']
         task.description = request.POST['description']
         task.priority = request.POST['priority']
-        due_date = request.POST['due_date']
+        due_date = request.POST.get('due_date')
         task.due_date = due_date if due_date else None
         task.save()
         return redirect('task_list')
@@ -200,6 +164,7 @@ def toggle_task(request, task_id):
         task.completed = not task.completed
         task.save()
     return redirect('task_list')
+
 @login_required
 def user_dashboard(request, task_id=None):
     tasks = Task.objects.filter(user = request.user)
@@ -224,13 +189,15 @@ def user_dashboard(request, task_id=None):
         'completion_percentage': completion_percentage,
         'high_priority_tasks' : high_priority_tasks,
     })
-# Dupicate of task_list view before stage 9: Task Filtering
-# It creates a conflict with the new task_list view, so it is commented out.
-# @login_required
-# def task_list(request):
-#     tasks = Task.objects.filter(user=request.user)
-#     return render(
-#         request,
-#         'tasks/task_list.html',
-#         {'tasks': tasks}
-#     )
+
+def contact(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        subject = request.POST.get("subject")
+        message = request.POST.get("message")
+
+        # For now, just receive the form data.
+        # Email functionality can be added later.
+
+    return render(request, "tasks/contact.html")
