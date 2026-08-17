@@ -186,7 +186,7 @@ def user_dashboard(request, task_id=None):
         'total_tasks': total_tasks,
         'completed_tasks': completed_tasks,
         'pending_tasks': pending_tasks,
-        'completion_percentage': completion_percentage,
+        'completion_percentage': int(completion_percentage),
         'high_priority_tasks' : high_priority_tasks,
     })
 
