@@ -127,3 +127,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # login redirect url and login url
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
