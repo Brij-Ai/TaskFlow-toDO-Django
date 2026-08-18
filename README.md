@@ -1,4 +1,4 @@
-# ToDo — Django
+# A Django-based Task Management Application
 
 A simple task management web application built with **Django**. Users can create, view, update, and delete their own tasks through an authenticated interface.
 
