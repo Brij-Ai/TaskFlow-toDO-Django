@@ -13,77 +13,292 @@
   <body class="bg-dark" style="font-family: Arial sans-serif; color: #615d5d">
     {% block lio %}
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-          <a class="navbar-brand fw-bold">📋TaskFlow </a>
-          <div class="ms-auto">
+        
+          <div class="container">
+            <!-- Brand -->
+            <a class="navbar-brand fw-bold">📋TaskFlow </a>
+
+            
             {% if user.is_authenticated %}
-            <span class="text-bg-black me-3 gap-3">
-              Welcome <b>{{ user.username }}</b> 👤</span>
-            <form action="{% url 'logout' %}" method="POST" class="d-inline">
-              {% csrf_token %}
-              <button class="btn btn-outline-danger">Logout</button>
-            </form>
-              <a href="{%url 'task_list'%}" class="btn btn-outline-success"role="button">My Task</a>
-              <a href="{% url 'user_dashboard' %}" class="btn btn-outline-info" role="button">Dashboard</a>
+
+              <!-- Right Side -->
+              <div class="d-flex align-items-center gap-2 ms-auto">
+
+                  <!-- Welcome -->
+                  <span class="text-dark me-2">
+                      Welcome, <strong>{{ user.username }}</strong> 👤
+                  </span>
+                  <!-- Dashboard -->
+                  <a href="{% url 'user_dashboard' %}"
+                    class="btn btn-outline-info">
+                      Dashboard
+                  </a>
+
+                  <!-- Search -->
+                  <form method="GET"
+                        action="{% url 'task_list' %}"
+                        class="d-flex">
+
+                      <input
+                          type="search"
+                          name="search"
+                          class="form-control"
+                          placeholder="Search tasks..."
+                          value="{{ search_query|default:'' }}"
+                          style="width: 220px;"
+                      >
+
+                      <button
+                          type="submit"
+                          class="btn btn-danger ms-2">
+                          Search
+                      </button>
+
+                  </form>
+
+                  <!-- Logout -->
+                  <form action="{% url 'logout' %}"
+                        method="POST"
+                        class="ms-1">
+
+                      {% csrf_token %}
+
+                      <button
+                          type="submit"
+                          class="btn btn-outline-danger">
+                          Logout
+                      </button>
+
+                  </form>
+
+              </div>
             {% endif %}
-          </div>
-          <div>
-            {% if not user.is_authenticated %}
-                <a href="{% url 'register' %}" class="btn btn-primary me-2">Register</a>
-                <a href="{% url 'login' %}" class="btn btn-outline-primary"> Login </a>
+
+            
+            {% comment %} {% if not user.is_authenticated %}
+              <div>
+                  <a href="{% url 'register' %}" class="btn btn-primary me-2">Register</a>
+                  <a href="{% url 'login' %}" class="btn btn-outline-primary"> Login </a>
+                </div>
             {% endif %}
-          </div>
+               {% endcomment %}
         </nav>
       {% endblock %}
 
-    {% block content %}
-    <div class="container text-center py-5">
-      <h1 class="display-4 fw-bold">Welcome to TaskFlow</h1>
+{% block content %}
 
-      <p class="lead mt-3">
-        Organize your tasks. Stay focused. Get things done.
-      </p>
+<div class="container py-5">
 
-      <p class="mt-4">
-        TaskFlow is a simple and efficient task management application designed
-        to help you organize your daily work and keep track of your progress.
-      </p>
+    <!-- Hero Section -->
+    <div class="text-center py-5">
 
-      <div class="row mt-5">
-        <div class="col-md-4">
-          <h3>Manage Your Tasks</h3>
-          <p>
-            Create, edit, complete, and delete tasks from one place. Set
-            priorities and keep your work organized.
-          </p>
+        <span class="badge bg-primary-subtle text-primary px-3 py-2 mb-3">
+            Simple Task Management
+        </span>
+
+        <h1 class="display-3 fw-bold mb-3">
+            Organize Your Work.<br>
+            <span class="text-primary">Achieve Your Goals.</span>
+        </h1>
+
+        <p class="lead text-body-secondary mx-auto" style="max-width: 700px;">
+            TaskFlow helps you organize your daily tasks, set priorities,
+            track your progress, and stay focused on what matters.
+        </p>
+
+        <div class="mt-4">
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4 me-2">
+                Get Started
+            </a>
+
+            <a href="#features" class="btn btn-outline-secondary btn-lg px-4">
+                Explore Features
+            </a>
         </div>
 
-        <div class="col-md-4">
-          <h3>Track Your Progress</h3>
-          <p>
-            Use your dashboard to see your total, completed, pending, and
-            high-priority tasks at a glance.
-          </p>
-        </div>
-
-        <div class="col-md-4">
-          <h3>Stay Productive</h3>
-          <p>
-            Keep your tasks organized, focus on what matters, and make steady
-            progress toward your goals.
-          </p>
-        </div>
-      </div>
-
-      <div class="mt-5">
-        <h4>Get Started</h4>
-
-        <p>Create an account and start managing your tasks today.</p>
-        
-        <a class="nav-link, link-underline-light" href="{% url 'contact' %}">Contact Us</a> 
-      </div>
     </div>
 
-    {% endblock %}
+
+    <!-- Features Section -->
+    <div id="features" class="py-5">
+
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Everything You Need to Stay Organized</h2>
+
+            <p class="text-body-secondary">
+                Manage your work from one simple and focused workspace.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Feature 1 -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center">
+
+                    <div class="mb-3">
+                        <i class="bi bi-check2-square fs-1 text-primary"></i>
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Manage Tasks
+                    </h4>
+
+                    <p class="text-body-secondary">
+                        Create, edit, complete, and delete your tasks
+                        from one convenient place.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Feature 2 -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center">
+
+                    <div class="mb-3">
+                        <i class="bi bi-bar-chart-line fs-1 text-success"></i>
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Track Progress
+                    </h4>
+
+                    <p class="text-body-secondary">
+                        See your completed, pending, total, and
+                        high-priority tasks at a glance.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Feature 3 -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center">
+
+                    <div class="mb-3">
+                        <i class="bi bi-lightning-charge fs-1 text-warning"></i>
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Stay Productive
+                    </h4>
+
+                    <p class="text-body-secondary">
+                        Prioritize important work, stay focused,
+                        and make steady progress toward your goals.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- How It Works -->
+    <div class="py-5">
+
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">How TaskFlow Works</h2>
+
+            <p class="text-body-primary">
+                Start managing your tasks in three simple steps.
+            </p>
+        </div>
+
+        <div class="row g-4 text-center">
+
+            <div class="col-md-4">
+                <div class="p-4">
+                    <div class="display-6 fw-bold text-primary mb-3">
+                        01
+                    </div>
+
+                    <h5 class="fw-bold">Create</h5>
+
+                    <p class="text-body-primary">
+                        Add tasks and describe what needs to be done.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="p-4">
+                    <div class="display-6 fw-bold text-primary mb-3">
+                        02
+                    </div>
+
+                    <h5 class="fw-bold">Prioritize</h5>
+
+                    <p class="text-body-primary">
+                        Set priorities and focus on the tasks
+                        that matter most.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="p-4">
+                    <div class="display-6 fw-bold text-primary mb-3">
+                        03
+                    </div>
+
+                    <h5 class="fw-bold">Complete</h5>
+
+                    <p class="text-body-primary">
+                        Mark your tasks as complete and track
+                        your progress.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Call To Action -->
+    <div class="py-5">
+        <div class="bg-primary text-white rounded-4 p-5 text-center shadow">
+
+            <h2 class="fw-bold mb-3">
+                Ready to Get Organized?
+            </h2>
+
+            <p class="mb-4">
+                Create your TaskFlow account and start managing
+                your tasks today.
+            </p>
+
+            <a href="{% url 'register' %}"
+               class="btn btn-light btn-lg px-4">
+                Create Your Account
+            </a>
+
+        </div>
+    </div>
+
+
+    <!-- Contact -->
+    <div class="text-center py-4">
+
+        <p class="text-body-primary mb-2">
+            Have a question or feedback?
+        </p>
+
+        <a href="{% url 'contact' %}"
+           class="link-primary fw-semibold">
+            Contact Us
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
   </body>
 </html>
