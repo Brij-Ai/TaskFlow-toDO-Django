@@ -73,15 +73,6 @@
 
               </div>
             {% endif %}
-
-            
-            {% comment %} {% if not user.is_authenticated %}
-              <div>
-                  <a href="{% url 'register' %}" class="btn btn-primary me-2">Register</a>
-                  <a href="{% url 'login' %}" class="btn btn-outline-primary"> Login </a>
-                </div>
-            {% endif %}
-               {% endcomment %}
         </nav>
       {% endblock %}
 
@@ -101,7 +92,7 @@
             <span class="text-primary">Achieve Your Goals.</span>
         </h1>
 
-        <p class="lead text-body-secondary mx-auto" style="max-width: 700px;">
+        <p class="lead text-body-primary mx-auto" style="max-width: 700px;">
             TaskFlow helps you organize your daily tasks, set priorities,
             track your progress, and stay focused on what matters.
         </p>

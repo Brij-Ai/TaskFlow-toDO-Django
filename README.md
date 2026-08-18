@@ -49,8 +49,8 @@ TaskFlow/
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd <repository-folder>
+git clone https://github.com/Brij-Ai/TaskFlow-Django.git
+cd TaskFlow-Django
 ```
 
 ### 2. Create a virtual environment
