@@ -168,6 +168,7 @@ def toggle_task(request, task_id):
 @login_required
 def user_dashboard(request, task_id=None):
     tasks = Task.objects.filter(user = request.user)
+    recent_tasks = tasks.order_by('-id')[:5]
     # Dashboard statistics
     total_tasks = tasks.count()
     completed_tasks = tasks.filter(completed = True).count()
@@ -188,6 +189,7 @@ def user_dashboard(request, task_id=None):
         'pending_tasks': pending_tasks,
         'completion_percentage': int(completion_percentage),
         'high_priority_tasks' : high_priority_tasks,
+        "recent_tasks": recent_tasks,
     })
 
 def contact(request):
