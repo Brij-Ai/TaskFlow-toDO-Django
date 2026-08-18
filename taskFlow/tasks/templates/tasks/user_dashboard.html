@@ -5,47 +5,239 @@
 
 {% block content %}
     
-    <!-- Statistics Section -->
-<div class="container py-4" style="font-family: Arial, sans-serif; color: #615d5d;">
+<div class="container py-5">
 
-    <div class="row justify-content-center g-4" style="margin-top: 50px;">
+    <!-- Dashboard Header -->
+        <div class="mb-5">
+            <h1 class="fw-bold text-white">
+                {{user.username}}'s Dashboard
+            </h1>
 
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card shadow-sm border-0 text-center">
-                <div class="card-body">
-                    <p class="text-muted mb-2">Total Tasks</p>
-                    <h2 class="fw-bold mb-0">{{ total_tasks }}</h2>
+            <p class="text-secondary mb-0">
+                Here's an overview of your tasks and progress.
+            </p>
+        </div>
+
+
+    <!-- Statistics Cards -->
+    <div class="row g-4">
+
+        <!-- Total Tasks -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-secondary">
+                            Total Tasks
+                        </span>
+
+                        <span class="fs-4">
+                            📋
+                        </span>
+                    </div>
+
+                    <h2 class="fw-bold mb-1">
+                        {{ total_tasks }}
+                    </h2>
+
+                    <small class="text-secondary">
+                        All your tasks
+                    </small>
+
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card shadow-sm border-0 text-center">
-                <div class="card-body">
-                    <p class="text-muted mb-2">Pending</p>
-                    <h2 class="fw-bold mb-0">{{ pending_tasks }}</h2>
+
+        <!-- Pending Tasks -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-secondary">
+                            Pending
+                        </span>
+
+                        <span class="fs-4">
+                            ⏳
+                        </span>
+                    </div>
+
+                    <h2 class="fw-bold mb-1">
+                        {{ pending_tasks }}
+                    </h2>
+
+                    <small class="text-secondary">
+                        Tasks to complete
+                    </small>
+
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card shadow-sm border-0 text-center">
-                <div class="card-body">
-                    <p class="text-muted mb-2">Completed</p>
-                    <h2 class="fw-bold mb-0">{{ completed_tasks }}</h2>
+
+        <!-- Completed Tasks -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-secondary">
+                            Completed
+                        </span>
+
+                        <span class="fs-4">
+                            ✅
+                        </span>
+                    </div>
+
+                    <h2 class="fw-bold mb-1">
+                        {{ completed_tasks }}
+                    </h2>
+
+                    <small class="text-secondary">
+                        Tasks finished
+                    </small>
+
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card shadow-sm border-0 text-center">
-                <div class="card-body">
-                    <p class="text-muted mb-2">Completion Rate</p>
-                    <h2 class="fw-bold mb-0">{{ completion_percentage }}%</h2>
+
+        <!-- Completion Rate -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-secondary">
+                            Completion Rate
+                        </span>
+
+                        <span class="fs-4">
+                            📈
+                        </span>
+                    </div>
+
+                    <h2 class="fw-bold mb-1">
+                        {{ completion_percentage }}%
+                    </h2>
+
+                    <small class="text-secondary">
+                        Overall progress
+                    </small>
+                    <div class="progress mt-3" style="height: 8px;">
+                        <div class="progress-bar"
+                            role="progressbar"
+                            style="width: {{ completion_percentage }}%;"
+                            aria-valuenow="{{ completion_percentage }}"
+                            aria-valuemin="0"
+                            aria-valuemax="100">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
+    </div>
+
+    <!-- Recent Tasks -->
+    <div class="mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="fw-bold text-white mb-1">
+                Recent Tasks
+            </h3>
+
+            <p class="text-secondary mb-0">
+                Your latest tasks at a glance.
+            </p>
+        </div>
+
+        <a href="{% url 'task_list' %}"
+           class="btn btn-outline-light">
+            View All
+        </a>
+    </div>
+
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-0">
+
+            {% for task in recent_tasks %}
+
+                <div class="d-flex justify-content-between align-items-center
+                            p-3 border-bottom">
+
+                    <!-- Task Information -->
+                    <div>
+                        <h6 class="fw-bold mb-1">
+                            {{ task.title }}
+                        </h6>
+
+                        {% if task.completed %}
+                            <span class="badge bg-success">
+                                Completed
+                            </span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+                        {% endif %}
+                    </div>
+
+
+                    <!-- Priority -->
+                    <div>
+                        {% if task.priority == "high" %}
+                            <span class="badge bg-danger">
+                                High
+                            </span>
+
+                        {% elif task.priority == "medium" %}
+                            <span class="badge bg-warning text-dark">
+                                Medium
+                            </span>
+
+                        {% else %}
+                            <span class="badge bg-secondary">
+                                Low
+                            </span>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="text-center p-5">
+                    <p class="text-secondary mb-2">
+                        No tasks yet.
+                    </p>
+
+                    <a href="{% url 'create_task' %}"
+                       class="btn btn-primary">
+                        Create Your First Task
+                    </a>
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Back to Tasks -->
+    <div class="mt-5">
+        <a href="{% url 'task_list' %}"
+           class="btn btn-success px-4">
+            ← Back to Tasks
+        </a>
     </div>
 
 </div>
