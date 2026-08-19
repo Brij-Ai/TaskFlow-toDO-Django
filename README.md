@@ -32,7 +32,7 @@ TaskFlow/
 ├── manage.py
 ├── requirements.txt
 ├── db.sqlite3
-├── project/
+├── TaskFlow/
 │   ├── settings.py
 │   ├── urls.py
 │   └── ...
